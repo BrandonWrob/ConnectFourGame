@@ -9,11 +9,21 @@ public class UserInputDialogue {
         // Prompt user for Player 1 name
         String player1 = JOptionPane.showInputDialog(frame, "Enter Player 1 name:");
 
-        // Prompt user for Player 2 name
-        String player2 = JOptionPane.showInputDialog(frame, "Enter Player 2 name:");
+        String player2;
+        boolean isValidInput;
+
+        do {
+            // Prompt user for Player 2 name
+            player2 = JOptionPane.showInputDialog(frame, "Enter Player 2 name:");
+            isValidInput = !player2.equalsIgnoreCase(player1);
+            // User cannot give same name as player 1, if they do this prompts them to change it
+            if (!isValidInput) {
+                JOptionPane.showMessageDialog(frame, "Player 2 name must be different from Player 1.");
+            }
+        } while (!isValidInput);
 
         int piecesToWin = 0;
-        boolean isValidInput = false;
+        isValidInput = false;
 
         do {
             try {
