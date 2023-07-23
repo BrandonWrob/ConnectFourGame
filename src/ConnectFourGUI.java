@@ -21,6 +21,7 @@ public class ConnectFourGUI extends JFrame implements ActionListener {
     private boolean gameOver;
     private String currentPlayer;
     private int currentStreak;
+    private int incrementPlayerPieces;
 
 
     public static void main(String[] args) {
@@ -182,26 +183,27 @@ public class ConnectFourGUI extends JFrame implements ActionListener {
 
 
     private void switchUser(String nextPlayer) {
+        userStats.setCurrentPlayer(currentPlayer);
         currentPlayer = nextPlayer + "'s turn (";
         currentPlayer += (nextPlayer.equals(player1) ? "X" : "O") + "):";
         int length = currentPlayer.length();
         String symbol =  currentPlayer.substring(length - 3, length - 2);
         if (symbol.equals("X")) {
             currentStreak = userStats.getPlayer1Streak();
+            incrementPlayerPieces = userStats.getPlayer1Pieces();
         } else {
             currentStreak = userStats.getPlayer2Streak();
+            incrementPlayerPieces = userStats.getPlayer2Pieces();
         }
         JLabel headerLabel = (JLabel) headerPanel.getComponent(0);
         JLabel headerLabelStreak = (JLabel) headerPanel.getComponent(1);
+        JLabel headerLabelCount = (JLabel) headerPanel.getComponent(2);
         headerLabel.setText(currentPlayer);
-        headerLabelStreak.setText("Max # Connected Pieces: " + currentStreak +" " + symbol);
-        userStats.setCurrentPlayer(currentPlayer);
-        if (nextPlayer.equals(player2)) {
-            userStats.incrementPlayerPieces("X");
-        } else if (nextPlayer.equals(player1)) {
-            userStats.incrementPlayerPieces("O");
-        }
+        headerLabelStreak.setText("Max # Connected Pieces: " + currentStreak);
+        headerLabelCount.setText("Total Pieces Placed: " + incrementPlayerPieces);
+       
     }
+   
 
 
     private boolean isBoardFull() {
@@ -217,7 +219,3 @@ public class ConnectFourGUI extends JFrame implements ActionListener {
 
 
 }
-
-
-
-
