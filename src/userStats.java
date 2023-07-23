@@ -52,6 +52,7 @@ public class UserStats {
     private String currentPlayer;
 
 
+
    /**
     * Constructor of UserStats which takes two parameters (rows, columns)
     * and stores labels for user stats
@@ -145,6 +146,7 @@ public class UserStats {
     }
 
 
+
     /**
      * method traverses the array and looks for consecutive
      * symbols horizontally, vertically, and diagnally and
@@ -168,7 +170,6 @@ public class UserStats {
                 }
             }
         }
-   
         // Check vertically
         for (int col = 0; col < columns; col++) {
             int currentConsecutive = 0;
