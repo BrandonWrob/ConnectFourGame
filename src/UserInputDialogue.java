@@ -2,6 +2,10 @@ import javax.swing.*;
 
 public class UserInputDialogue {
 
+    public static int piecesToWin = 0;
+    public static String player1 = null;
+    public static String player2 = null;
+
     public static String[] collectUserInput() {
         // Create a dialog box
         JFrame frame = new JFrame("User Input");

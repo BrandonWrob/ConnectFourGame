@@ -26,10 +26,10 @@ public class ConnectFourGUI extends JFrame implements ActionListener {
     private static final Color COLOR_YELLOW = Color.YELLOW;
 
     /** private instance variable of the number of rows */
-    private int rows;
+    public static int rows;
 
     /** private instance variable of the number of columns */
-    private int columns;
+    public static int columns;
 
     /** private instance variable which represents player one's name */
     private String player1;
