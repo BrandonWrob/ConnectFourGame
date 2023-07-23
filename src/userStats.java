@@ -1,300 +1,132 @@
-import java.util.Scanner;
-
-
 public class UserStats {
-    private static final int ROWS = ConnectFourGUI.rows ;
-    private static final int COLUMNS = ConnectFourGUI.columns;
-    private static final char EMPTY = '-';
-    private static final char PLAYER1 = 'X';
-    private static final char PLAYER2 = 'O';
 
 
-    private char[][] board;
-    private int[] lastMove;
-    private char currentPlayer;
-    private int player1Pieces;
-    private int player2Pieces;
-    private int maxConnected1;
-    private int maxConnected2;
+    private String[][] replicaLabelStringArray;
+    private int rows;
+    private int columns;
+    private int player1Pieces = 0;
+    private int player2Pieces = 0;
+    private int player1Streak = 0;
+    private int player2Streak = 0;
+    private String currentPlayer;
 
 
-    public UserStats() {
-        board = new char[ROWS][COLUMNS];
-        lastMove = new int[2];
-        currentPlayer = PLAYER1; 
-        player1Pieces = 0;
-        player2Pieces = 0;
-        maxConnected1 = 0;
-        maxConnected2 = 0;
-        initializeBoard();
+    public UserStats(int rows, int columns) {
+        this.rows = rows;
+        this.columns = columns;
+        replicaLabelStringArray = new String[rows][columns];
     }
 
 
-    private void initializeBoard() {
-        for (int row = 0; row < ROWS; row++) {
-            for (int col = 0; col < COLUMNS; col++) {
-                board[row][col] = EMPTY;
+    public void updateLabelStringArray(String[][] labelStringArray) {
+        for (int i = 0; i < labelStringArray.length; i++) {
+            for (int j = 0; j < labelStringArray[i].length; j++) {
+                replicaLabelStringArray[i][j] = labelStringArray[i][j];
             }
         }
+
+
+        int length = currentPlayer.length();
+        currentPlayer = currentPlayer.substring(length - 3, length - 2);
+        findMaxConsecutiveSymbolsForSymbol(currentPlayer);
+        incrementPlayerPieces(currentPlayer);
+        printReplicaLabelStringArray();
     }
 
 
-    private void printBoard() {
-        for (int row = ROWS - 1; row >= 0; row--) {
-            for (int col = 0; col < COLUMNS; col++) {
-                System.out.print(board[row][col] + " ");
+    public void printReplicaLabelStringArray() {
+        for (int i = 0; i < replicaLabelStringArray.length; i++) {
+            for (int j = 0; j < replicaLabelStringArray[i].length; j++) {
+                System.out.print(replicaLabelStringArray[i][j] + " ");
             }
             System.out.println();
         }
         System.out.println();
+        System.out.println("current player is " + currentPlayer);
+        System.out.println("player one placed " + player1Pieces);
+        System.out.println("player two placed " + player2Pieces);
+        System.out.println("player one streak " + player1Streak);
+        System.out.println("player two streak " + player2Streak);
     }
 
 
-    private boolean isValidMove(int column) {
-        return column >= 0 && column < COLUMNS && board[ROWS - 1][column] == EMPTY;
+    public void setCurrentPlayer(String currentPlayer) {
+        this.currentPlayer = currentPlayer;
     }
 
 
-    private void makeMove(int column) {
-        for (int row = 0; row < ROWS; row++) {
-            if (board[row][column] == EMPTY) {
-                board[row][column] = currentPlayer;
-                lastMove[0] = row;
-                lastMove[1] = column;
-                break;
-            }
+    public void incrementPlayerPieces(String currentPlayer) {
+        if (currentPlayer.equals("X")) {
+            player1Pieces++;
+        } else if (currentPlayer.equals("O")) {
+            player2Pieces++;
         }
-
-        
     }
 
 
-    private boolean checkWin() {
-        int connected = 0;
-
-        if (currentPlayer == PLAYER1) {
-            // Check horizontal
-            for (int col = 0; col < COLUMNS; col++) {
-                connected = 0;
-                for (int row = 0; row < ROWS; row++) {
-                    if (board[row][col] == currentPlayer) {
-                        connected++;
-                        if (connected > maxConnected1) {
-                            maxConnected1 = connected;
-                        }
-                        if (connected == UserInputDialogue.piecesToWin) {
-                            return true;
-                        }
-                    } else {
-                        connected = 0;
-                    }
-                }
-            }
-
-
-            // Check vertical
-            for (int row = 0; row < ROWS; row++) {
-                connected = 0;
-                for (int col = 0; col < COLUMNS; col++) {
-                    if (board[row][col] == currentPlayer) {
-                        connected++;
-                        if (connected > maxConnected1) {
-                            maxConnected1 = connected;
-                        }
-                        if (connected == UserInputDialogue.piecesToWin) {
-                            return true;
-                        }
-                    } else {
-                        connected = 0;
-                    }
-                }
-            }
-
-
-            // Check diagonal (top-left to bottom-right)
-            for (int row = 0; row < ROWS - UserInputDialogue.piecesToWin + 1; row++) {
-                for (int col = 0; col < COLUMNS - UserInputDialogue.piecesToWin + 1; col++) {
-                    connected = 0;
-                    for (int i = 0; i < UserInputDialogue.piecesToWin; i++) {
-                        if (board[row + i][col + i] == currentPlayer) {
-                            connected++;
-                            if (connected > maxConnected1) {
-                                maxConnected1 = connected;
-                            }
-                            if (connected == UserInputDialogue.piecesToWin) {
-                                return true;
-                            }
-                        } else {
-                            connected = 0;
-                        }
-                    }
-                }
-            }
-
-
-            // Check diagonal (bottom-left to top-right)
-            for (int row = UserInputDialogue.piecesToWin - 1; row < ROWS; row++) {
-                for (int col = 0; col < COLUMNS - UserInputDialogue.piecesToWin + 1; col++) {
-                    connected = 0;
-                    for (int i = 0; i < UserInputDialogue.piecesToWin; i++) {
-                        if (board[row - i][col + i] == currentPlayer) {
-                            connected++;
-                            if (connected > maxConnected1) {
-                                maxConnected1 = connected;
-                            }
-                            if (connected == UserInputDialogue.piecesToWin) {
-                                return true;
-                            }
-                        } else {
-                            connected = 0;
-                        }
-                    }
-                }
-            }
-        } else {
-            for (int col = 0; col < COLUMNS; col++) {
-                connected = 0;
-                for (int row = 0; row < ROWS; row++) {
-                    if (board[row][col] == currentPlayer) {
-                        connected++;
-                        if (connected > maxConnected2) {
-                            maxConnected2 = connected;
-                        }
-                        if (connected == UserInputDialogue.piecesToWin) {
-                            return true;
-                        }
-                    } else {
-                        connected = 0;
-                    }
-                }
-            }
-
-
-            // Check vertical
-            for (int row = 0; row < ROWS; row++) {
-                connected = 0;
-                for (int col = 0; col < COLUMNS; col++) {
-                    if (board[row][col] == currentPlayer) {
-                        connected++;
-                        if (connected > maxConnected2) {
-                            maxConnected2 = connected;
-                        }
-                        if (connected == UserInputDialogue.piecesToWin) {
-                            return true;
-                        }
-                    } else {
-                        connected = 0;
-                    }
-                }
-            }
-
-
-            // Check diagonal (top-left to bottom-right)
-            for (int row = 0; row < ROWS - UserInputDialogue.piecesToWin + 1; row++) {
-                for (int col = 0; col < COLUMNS - UserInputDialogue.piecesToWin + 1; col++) {
-                    connected = 0;
-                    for (int i = 0; i < UserInputDialogue.piecesToWin; i++) {
-                        if (board[row + i][col + i] == currentPlayer) {
-                            connected++;
-                            if (connected > maxConnected2) {
-                                maxConnected2 = connected;
-                            }
-                            if (connected == UserInputDialogue.piecesToWin) {
-                                return true;
-                            }
-                        } else {
-                            connected = 0;
-                        }
-                    }
-                }
-            }
-
-
-            // Check diagonal (bottom-left to top-right)
-            for (int row = UserInputDialogue.piecesToWin - 1; row < ROWS; row++) {
-                for (int col = 0; col < COLUMNS - UserInputDialogue.piecesToWin + 1; col++) {
-                    connected = 0;
-                    for (int i = 0; i < UserInputDialogue.piecesToWin; i++) {
-                        if (board[row - i][col + i] == currentPlayer) {
-                            connected++;
-                            if (connected > maxConnected2) {
-                                maxConnected2 = connected;
-                            }
-                            if (connected == UserInputDialogue.piecesToWin) {
-                                return true;
-                            }
-                        } else {
-                            connected = 0;
-                        }
-                    }
-                }
-            }
-        }
-
-        return false;
+    public int getPlayer1Pieces() {
+        return player1Pieces;
     }
 
 
-    public void play() {
-        Scanner scanner = new Scanner(System.in);
-        boolean gameOver = false;
+    public int getPlayer2Pieces() {
+        return player2Pieces;
+    }
 
 
-        while (!gameOver) {
-            printBoard();
-
-            if (currentPlayer == PLAYER1) {
-                System.out.println("Pieces Placed: " + player1Pieces);
-            } else {
-                System.out.println("Pieces Placed: " + player2Pieces);
-            }
-
-            if (currentPlayer == PLAYER1 ) {
-                System.out.println("Maximum Connected Pieces: " + maxConnected1 );
-            } else {
-                System.out.println("Maximum Connected Pieces: " + maxConnected2 );
-            }
+    public int getPlayer1Streak() {
+        return player1Streak;
+    }
 
 
-
-            System.out.print("Enter column number (0-" + (COLUMNS - 1) + "): ");
-            int column = scanner.nextInt();
-
-
-
-            if (isValidMove(column)) {
-                makeMove(column);
+    public int getPlayer2Streak() {
+        return player2Streak;
+    }
 
 
-                if (currentPlayer == PLAYER1) {
-                    player1Pieces++;
+    private void findMaxConsecutiveSymbolsForSymbol(String symbol) {
+        int maxConsecutive = 0;
+
+
+        // Check horizontally
+        for (int row = 0; row < rows; row++) {
+            int currentConsecutive = 0;
+            for (int col = 0; col < columns; col++) {
+                if (replicaLabelStringArray[row][col].equals(symbol)) {
+                    currentConsecutive++;
+                    if (currentConsecutive > maxConsecutive) {
+                        maxConsecutive = currentConsecutive;
+                    }
                 } else {
-                    player2Pieces++;
+                    currentConsecutive = 0;
                 }
-
-
-                if (checkWin()) {
-                    gameOver = true;
-                    System.out.println("Player " + currentPlayer + " wins!");
-                } else if (player1Pieces + player2Pieces == ROWS * COLUMNS) {
-                    gameOver = true;
-                    System.out.println("It's a draw!");
-                } else {
-                    currentPlayer = (currentPlayer == PLAYER1) ? PLAYER2 : PLAYER1;
-                }
-            } else {
-                System.out.println("Invalid move. Try again.");
             }
         }
 
 
-        scanner.close();
-    }
+        // Check vertically
+        for (int col = 0; col < columns; col++) {
+            int currentConsecutive = 0;
+            for (int row = 0; row < rows; row++) {
+                if (replicaLabelStringArray[row][col].equals(symbol)) {
+                    currentConsecutive++;
+                    if (currentConsecutive > maxConsecutive) {
+                        maxConsecutive = currentConsecutive;
+                    }
+                } else {
+                    currentConsecutive = 0;
+                }
+            }
+        }
 
 
-
-    public static void main(String[] args) {
-        UserStats game = new UserStats();
-        game.play();
+        // Update the streak for the correct player
+        if (symbol.equals("X")) {
+            player1Streak = Math.max(player1Streak, maxConsecutive);
+        } else if (symbol.equals("O")) {
+            player2Streak = Math.max(player2Streak, maxConsecutive);
+        }
     }
 }
+
+

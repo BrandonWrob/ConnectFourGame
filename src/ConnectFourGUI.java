@@ -2,20 +2,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+
 public class ConnectFourGUI extends JFrame implements ActionListener {
+
 
     private JPanel headerPanel;
     private JPanel arrayPanel;
     private static final Color COLOR_RED = Color.RED;
     private static final Color COLOR_YELLOW = Color.YELLOW;
-
-    /** private instance variable of the number of rows */
-    private int rows;
-
-    /** private instance variable of the number of columns */
-    private int columns;
-
-    /** private instance variable which represents player one's name */
+    public static int rows;
+    public static int columns;
     private String player1;
     private String player2;
     private JLabel[][] labels;
@@ -25,7 +21,7 @@ public class ConnectFourGUI extends JFrame implements ActionListener {
     private boolean gameOver;
     private String currentPlayer;
     private int currentStreak;
-    private int incrementPlayerPieces;
+
 
     public static void main(String[] args) {
         String[] userInput = UserInputDialogue.collectUserInput();
@@ -38,6 +34,7 @@ public class ConnectFourGUI extends JFrame implements ActionListener {
         new ConnectFourGUI(rows, columns, player1, player2);
     }
 
+
     public ConnectFourGUI(int rows, int columns, String player1, String player2) {
         this.rows = rows;
         this.columns = columns;
@@ -46,12 +43,15 @@ public class ConnectFourGUI extends JFrame implements ActionListener {
         this.gameOver = false;
         this.currentPlayer = player1 + "'s turn (X):";
 
+
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1000, 500);
 
+
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
+
 
         headerPanel = new JPanel(new GridLayout(1, 3));
         String[] columnNames = { currentPlayer, "Max # Connected Pieces: 0", "Total Pieces Placed: 0" };
@@ -61,14 +61,16 @@ public class ConnectFourGUI extends JFrame implements ActionListener {
         }
         panel.add(headerPanel, BorderLayout.NORTH);
 
+
         arrayPanel = new JPanel(new GridLayout(rows, columns));
-        labels = new JLabel[rows][columns]; 
-        labelStringArray = new String[rows - 1][columns]; 
+        labels = new JLabel[rows][columns];
+        labelStringArray = new String[rows - 1][columns];
         for (int i = 0; i < labelStringArray.length; i++) {
             for (int j = 0; j < labelStringArray[i].length; j++) {
                 labelStringArray[i][j] = "E";
             }
         }
+
 
         for (int i = 0; i < rows; i++) {
             if (i < columns) {
@@ -93,14 +95,17 @@ public class ConnectFourGUI extends JFrame implements ActionListener {
             }
         }
 
+
         panel.add(arrayPanel, BorderLayout.CENTER);
         frame.setContentPane(panel);
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
 
+
         winCondition = new WinCondition(rows - 1, columns);
         userStats = new UserStats(rows - 1, columns);
     }
+
 
     public void actionPerformed(ActionEvent e) {
         if (gameOver) {
@@ -164,8 +169,10 @@ public class ConnectFourGUI extends JFrame implements ActionListener {
                 switchUser(player1);
             }
 
+
             winCondition.updateLabelStringArray(labelStringArray);
             userStats.updateLabelStringArray(labelStringArray);
+
 
             if (isBoardFull()) {
                 gameOver = true;
@@ -173,28 +180,29 @@ public class ConnectFourGUI extends JFrame implements ActionListener {
         }
     }
 
+
     private void switchUser(String nextPlayer) {
-        userStats.setCurrentPlayer(currentPlayer);
         currentPlayer = nextPlayer + "'s turn (";
         currentPlayer += (nextPlayer.equals(player1) ? "X" : "O") + "):";
         int length = currentPlayer.length();
         String symbol =  currentPlayer.substring(length - 3, length - 2);
         if (symbol.equals("X")) {
             currentStreak = userStats.getPlayer1Streak();
-            incrementPlayerPieces = userStats.getPlayer1Pieces();
         } else {
             currentStreak = userStats.getPlayer2Streak();
-            incrementPlayerPieces = userStats.getPlayer2Pieces();
         }
         JLabel headerLabel = (JLabel) headerPanel.getComponent(0);
         JLabel headerLabelStreak = (JLabel) headerPanel.getComponent(1);
-        JLabel headerLabelCount = (JLabel) headerPanel.getComponent(2);
         headerLabel.setText(currentPlayer);
-        headerLabelStreak.setText("Max # Connected Pieces: " + currentStreak);
-        headerLabelCount.setText("Total Pieces Placed: " + incrementPlayerPieces);
-        
+        headerLabelStreak.setText("Max # Connected Pieces: " + currentStreak +" " + symbol);
+        userStats.setCurrentPlayer(currentPlayer);
+        if (nextPlayer.equals(player2)) {
+            userStats.incrementPlayerPieces("X");
+        } else if (nextPlayer.equals(player1)) {
+            userStats.incrementPlayerPieces("O");
+        }
     }
-    
+
 
     private boolean isBoardFull() {
         for (int row = 0; row < rows - 1; row++) {
@@ -207,4 +215,9 @@ public class ConnectFourGUI extends JFrame implements ActionListener {
         return true;
     }
 
+
 }
+
+
+
+
