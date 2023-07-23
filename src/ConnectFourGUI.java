@@ -8,8 +8,14 @@ public class ConnectFourGUI extends JFrame implements ActionListener {
     private JPanel arrayPanel;
     private static final Color COLOR_RED = Color.RED;
     private static final Color COLOR_YELLOW = Color.YELLOW;
-    public static int rows;
-    public static int columns;
+
+    /** private instance variable of the number of rows */
+    private int rows;
+
+    /** private instance variable of the number of columns */
+    private int columns;
+
+    /** private instance variable which represents player one's name */
     private String player1;
     private String player2;
     private JLabel[][] labels;
