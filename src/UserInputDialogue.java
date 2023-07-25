@@ -49,16 +49,19 @@ public class UserInputDialogue {
 
         // Prompt user for number of pieces to connect to win and confirms
         // it is in a valid range
+        final int minimumNumberNecessaryToWin = 4;
+        final int maximumNumberNecessaryToWin = 10;
         int piecesToWin = 0;
         do {
             try {
                 piecesToWin = Integer.parseInt(JOptionPane.showInputDialog(frame, 
-                    "Number of pieces necessary to win (between 3-10 and a whole number):"));
-                isValidInput = piecesToWin >= 3 && piecesToWin <= 10;
+                    "Number of pieces necessary to win (between 4-10 and a whole number):"));
+                isValidInput = piecesToWin >= minimumNumberNecessaryToWin && piecesToWin 
+                    <= maximumNumberNecessaryToWin;
                 if (!isValidInput) {
                     // gives pop-up prompt if invalid input
                     JOptionPane.showMessageDialog(frame, 
-                        "Please enter a value in the valid range of 3-10. ");
+                        "Please enter a value in the valid range of 4-10. ");
                 }
             } catch (NumberFormatException e) {
                 isValidInput = false;
