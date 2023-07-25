@@ -2,6 +2,8 @@
  * Class stores userstats of how many pieces user placed
  * and their max number of consecutive pieces
  * @author Vishal Kommid
+ * @author Brandon Wroblewski
+ * @author Dolly Jani
  */
 public class UserStats {
 
@@ -184,15 +186,17 @@ public class UserStats {
                 }
             }
         }
-   
+        
+
         // Check diagonally (top-left to bottom-right)
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < columns; col++) {
                 int currentConsecutive = 0;
-                for (int i = 0; i < 4; i++) {
+                for (int i = 0; i < rows; i++) {
                     int newRow = row + i;
                     int newCol = col + i;
-                    if (newRow < rows && newCol < columns && replicaLabelStringArray[newRow][newCol].equals(symbol)) {
+                    if (newRow < rows && newCol < columns && 
+                        replicaLabelStringArray[newRow][newCol].equals(symbol)) {
                         currentConsecutive++;
                         if (currentConsecutive > maxConsecutive) {
                             maxConsecutive = currentConsecutive;
@@ -208,10 +212,11 @@ public class UserStats {
         for (int row = 0; row < rows; row++) {
             for (int col = columns - 1; col >= 0; col--) {
                 int currentConsecutive = 0;
-                for (int i = 0; i < 4; i++) {
+                for (int i = 0; i < rows; i++) {
                     int newRow = row + i;
                     int newCol = col - i;
-                    if (newRow < rows && newCol >= 0 && replicaLabelStringArray[newRow][newCol].equals(symbol)) {
+                    if (newRow < rows && newCol >= 0 && 
+                        replicaLabelStringArray[newRow][newCol].equals(symbol)) {
                         currentConsecutive++;
                         if (currentConsecutive > maxConsecutive) {
                             maxConsecutive = currentConsecutive;
