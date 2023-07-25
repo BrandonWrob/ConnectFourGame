@@ -1,61 +1,71 @@
 import javax.swing.*;
 
-
+/**
+ * Class that creates a GUI that ask users for their name and
+ * how many pieces they want to be the wincondition
+ * @author Brandon Wroblewski
+ */
 public class UserInputDialogue {
 
-
-    public static int piecesToWin = 0;
-    public static String player1 = null;
-    public static String player2 = null;
-
-
+    /**
+     * method collects users input (reprompts if they give
+     * invalid information) and returns a string of the values
+     * @return users input in a string array
+     */
     public static String[] collectUserInput() {
-        // Create a dialog box
         JFrame frame = new JFrame("User Input");
 
-
-        // Prompt user for Player 1 name
-        String player1 = JOptionPane.showInputDialog(frame, "Enter Player 1 name:");
-
-
-        String player2;
-        boolean isValidInput;
-
-
+        // Prompt user for Player 1 name and confirms it meets criteria
+        String player1;
         do {
-            // Prompt user for Player 2 name
+            player1 = JOptionPane.showInputDialog(frame, "Enter Player 1 name:");
+            // confirms name is not blank
+            if (player1 == null || player1.trim().isEmpty()) {
+                // gives pop-up prompt if invalid input
+                JOptionPane.showMessageDialog(frame, "Name cannot be blank.");
+            }
+        } while (player1 == null || player1.trim().isEmpty());
+
+        // Prompt user for Player 2 name and confirms it meets criteria
+        String player2;
+        boolean isValidInput = false;
+        do {
             player2 = JOptionPane.showInputDialog(frame, "Enter Player 2 name:");
-            isValidInput = !player2.equalsIgnoreCase(player1);
-            // User cannot give same name as player 1, if they do this prompts them to change it
-            if (!isValidInput) {
-                JOptionPane.showMessageDialog(frame, "Player 2 name must be different from Player 1.");
+            // confirms name is unique from player 1
+            if (player2.equalsIgnoreCase(player1)) {
+                // gives pop-up prompt if invalid input
+                JOptionPane.showMessageDialog(frame, 
+                    "Player 2 name must be different from Player 1.");
+            }
+            // confirms name is not empty
+            else if (player2 == null || player2.trim().isEmpty()) {
+                // gives pop-up prompt if invalid input
+                JOptionPane.showMessageDialog(frame, "Name cannot be blank.");
+            }
+            else {
+                isValidInput = true;
             }
         } while (!isValidInput);
 
-
+        // Prompt user for number of pieces to connect to win and confirms
+        // it is in a valid range
         int piecesToWin = 0;
-        isValidInput = false;
-
-
         do {
             try {
-                // Prompt user for number of pieces to connect to win
-                piecesToWin = Integer.parseInt(JOptionPane.showInputDialog(frame, "Number of pieces necessary to win:"));
-                isValidInput = true;
+                piecesToWin = Integer.parseInt(JOptionPane.showInputDialog(frame, 
+                    "Number of pieces necessary to win (between 3-10 and a whole number):"));
+                isValidInput = piecesToWin >= 3 && piecesToWin <= 10;
+                if (!isValidInput) {
+                    // gives pop-up prompt if invalid input
+                    JOptionPane.showMessageDialog(frame, 
+                        "Please enter a value in the valid range of 3-10. ");
+                }
             } catch (NumberFormatException e) {
                 isValidInput = false;
             }
         } while (!isValidInput);
 
-
         // Return the entered values as an array
         return new String[]{player1, player2, String.valueOf(piecesToWin)};
     }
-
-
-    public static void main(String[] args) {
-        // Call the method to collect input and retrieve the values
-        String[] inputValues = collectUserInput();
-    }
 }
-
