@@ -63,6 +63,9 @@ public class ConnectFourGUI extends JFrame implements ActionListener {
     /** creates a private instance string of winning message */
     private String winner;
 
+    /** creates a private instance boolean of whether game ended */
+    private boolean gameEnded = false;
+
     /**
      * Method which tells program where to start
      * It collects user input, initializes the games settings, and starts
@@ -170,6 +173,13 @@ public class ConnectFourGUI extends JFrame implements ActionListener {
      */
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
+        if (gameEnded) {
+            // makes it so if game is over user cannot click,
+            // if they do nothing happens till they reset game
+            // and reprompts with score board/ restart option
+            new EndScreen(winner, player1Win, player2Win, this);
+            return;
+        }
         if (source instanceof JButton) {
             JButton button = (JButton) source;
             String buttonText = button.getText();
@@ -245,13 +255,16 @@ public class ConnectFourGUI extends JFrame implements ActionListener {
             if (isBoardFull()) {
                 winner = "Tie";
                 new EndScreen(winner, player1Win, player2Win, this);
+                gameEnded = true;
             } else if (userStats.getPlayer1Streak() >= piecesToWin) {
                 player1Win++;
                 winner = player1 + " Won!";
+                gameEnded = true;
                 new EndScreen(winner, player1Win, player2Win, this);
             } else if (userStats.getPlayer2Streak() >= piecesToWin) {
                 player2Win++;
                 winner = player2 + " Won!";
+                gameEnded = true;
                 new EndScreen(winner, player1Win, player2Win, this);
             }
         }
@@ -370,6 +383,7 @@ public class ConnectFourGUI extends JFrame implements ActionListener {
         headerLabel.setText(currentPlayer);
         headerLabelStreak.setText("Max # Connected Pieces: 0");
         headerLabelCount.setText("Total Pieces Placed: 0");
+        gameEnded = false;
     }
 
 
