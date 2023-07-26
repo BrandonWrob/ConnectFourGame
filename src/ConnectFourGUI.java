@@ -252,11 +252,7 @@ public class ConnectFourGUI extends JFrame implements ActionListener {
             }
             // updates the user stats and checks for a win or tie
             userStats.updateLabelStringArray(labelStringArray);
-            if (isBoardFull()) {
-                winner = "Tie";
-                new EndScreen(winner, player1Win, player2Win, this);
-                gameEnded = true;
-            } else if (userStats.getPlayer1Streak() >= piecesToWin) {
+            if (userStats.getPlayer1Streak() >= piecesToWin) {
                 player1Win++;
                 winner = player1 + " Won!";
                 gameEnded = true;
@@ -266,6 +262,11 @@ public class ConnectFourGUI extends JFrame implements ActionListener {
                 winner = player2 + " Won!";
                 gameEnded = true;
                 new EndScreen(winner, player1Win, player2Win, this);
+            }
+            else if (isBoardFull()) {
+                winner = "Tie";
+                new EndScreen(winner, player1Win, player2Win, this);
+                gameEnded = true;
             }
         }
     }
