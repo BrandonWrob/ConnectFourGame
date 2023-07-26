@@ -1,4 +1,14 @@
 # csc116-051-CE-02
+
+Compiling [
+
+To compile the program correctly you need to compile in the src directory and compile everything at once, so once there you type $ javac *.java then press enter, next you call the main class to run the program by typing $ java ConnectFourGUI
+
+It will not compile correctly if you don't follow the instructions!
+
+
+
+]
 Functionality:
 
 UserInputDialogue Class [
