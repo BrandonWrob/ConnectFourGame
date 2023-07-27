@@ -1,5 +1,23 @@
 # csc116-051-CE-02
-Functionality:
+
+Report Link [
+    https://docs.google.com/document/d/14rHcsIZHYu5cl8nO4J0L-IIV3m07P27FKWhPYdq7USQ/edit
+]
+
+UML Diagram Link [
+    https://cacoo.com/diagrams/AahisHAmDjqC02A6/2C242
+]
+
+Compiling [
+
+To compile the program correctly you need to compile in the src directory and compile everything at once, so once there you type $ javac *.java then press enter, next you call the main class to run the program by typing $ java ConnectFourGUI   
+
+It will not compile correctly if you don't follow the instructions!
+
+
+
+]
+Functionality of Classes:
 
 UserInputDialogue Class [
 
