@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author Vishal Kommidi
  * @author Brandon Wroblewski
  */
+
 public class UserStatsTest {
 
     /**
@@ -77,9 +78,11 @@ public class UserStatsTest {
             {"O", "X", "X"},
             {"X", "O", "X"}
         };
-        UserStats userStats = new UserStats(3, 3);
+
+        
         userStats.setCurrentPlayer("Player1");
         userStats.updateLabelStringArray(labelStringArray);
+
         assertEquals(0, userStats.getPlayer1Streak());
         assertEquals(0, userStats.getPlayer2Streak());
     }
@@ -94,7 +97,7 @@ public class UserStatsTest {
             {"O", "X", "O"},
             {"O", "X", "O"}
         };
-        UserStats userStats = new UserStats(3, 3);
+        
         userStats.setCurrentPlayer("Player1");
         userStats.updateLabelStringArray(labelStringArray);
         assertEquals(0, userStats.getPlayer1Streak());
