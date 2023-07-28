@@ -202,8 +202,9 @@ public class UserStats {
                             maxConsecutive = currentConsecutive;
                         }
                     } else {
-                        break;
+                       currentConsecutive = 0;
                     }
+                    i++;
                 }
             }
         }
@@ -222,8 +223,9 @@ public class UserStats {
                             maxConsecutive = currentConsecutive;
                         }
                     } else {
-                        break;
+                        currentConsecutive = 0; 
                     }
+                    i++;
                 }
             }
         }
