@@ -1,9 +1,4 @@
 # csc116-051-CE-02
-
-Report Link [
-    https://docs.google.com/document/d/14rHcsIZHYu5cl8nO4J0L-IIV3m07P27FKWhPYdq7USQ/edit
-]
-
 UML Diagram Link [
     https://cacoo.com/diagrams/AahisHAmDjqC02A6/2C242
 ]
