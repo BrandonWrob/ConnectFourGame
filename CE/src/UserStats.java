@@ -1,9 +1,7 @@
 /**
  * Class stores userstats of how many pieces user placed
  * and their max number of consecutive pieces
- * @author Vishal Kommid
  * @author Brandon Wroblewski
- * @author Dolly Jani
  */
 public class UserStats {
 
